@@ -149,7 +149,7 @@ const Index = () => {
 
       {screen === 'game' && (
         <GameScreen
-          key={`game-${Date.now()}`}
+          key={`game-${gameKeyRef.current}`}
           mode={mode}
           difficulty={difficulty}
           onHome={goHome}
@@ -160,7 +160,7 @@ const Index = () => {
 
       {screen === 'battle' && (
         <BattleScreen
-          key={`battle-${Date.now()}`}
+          key={`battle-${gameKeyRef.current}`}
           difficulty={difficulty}
           onHome={goHome}
           onFinish={handleBattleFinish}
@@ -170,7 +170,7 @@ const Index = () => {
 
       {screen === 'draw' && (
         <DrawScreen
-          key={`draw-${Date.now()}`}
+          key={`draw-${gameKeyRef.current}`}
           difficulty={difficulty}
           onHome={goHome}
           onFinish={handleDrawFinish}
@@ -187,7 +187,7 @@ const Index = () => {
 
       {screen === 'arremate' && (
         <ArremateScreen
-          key={`arremate-${Date.now()}`}
+          key={`arremate-${gameKeyRef.current}`}
           ageGroup={ageGroup}
           onBack={() => setScreen('arremate-select')}
           onFinish={handleArremateFinish}
