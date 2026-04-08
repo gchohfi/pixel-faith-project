@@ -75,28 +75,24 @@ export default function ArremateScreen({ ageGroup, onBack, onFinish, onFeedback 
     clearInterval(timerRef.current);
 
     const isCorrect = index === q.correct;
+    const earnedPts = isCorrect ? Math.max(timeLeft, 1) : 0;
+    const newScore = score + earnedPts;
+    const newCorrect = correctCount + (isCorrect ? 1 : 0);
+    const newWrong = wrongCount + (isCorrect ? 0 : 1);
+
     if (isCorrect) {
-      const pts = Math.max(timeLeft, 1);
-      setScore(s => s + pts);
-      setCorrectCount(c => c + 1);
+      setScore(newScore);
+      setCorrectCount(newCorrect);
       onFeedback('🎉');
     } else {
-      setWrongCount(w => w + 1);
+      setWrongCount(newWrong);
       onFeedback('😅');
     }
-    // Delay advance to let state update
+
     setTimeout(() => {
       const nextIdx = qIdx + 1;
       if (nextIdx >= questions.length) {
-        // Read from updated ref after a tick
-        setTimeout(() => {
-          const s = stateRef.current;
-          // Manually calculate since ref might not be updated yet
-          const finalScore = isCorrect ? score + pts : score;
-          const finalCorrect = isCorrect ? correctCount + 1 : correctCount;
-          const finalWrong = isCorrect ? wrongCount : wrongCount + 1;
-          onFinish({ score: finalScore, correct: finalCorrect, wrong: finalWrong, total: questions.length, faixa: ageGroup });
-        }, 50);
+        onFinish({ score: newScore, correct: newCorrect, wrong: newWrong, total: questions.length, faixa: ageGroup });
       } else {
         setQIdx(nextIdx);
         setAnswered(false);
