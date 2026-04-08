@@ -66,7 +66,7 @@ export default function ArremateScreen({ ageGroup, onBack, onFinish, onFeedback 
       onFeedback('⏰');
       advance();
     }
-  }, [timeLeft, answered, q]);
+  }, [timeLeft, answered, q, advance, onFeedback]);
 
   const handleAnswer = (index: number) => {
     if (answered || !q) return;

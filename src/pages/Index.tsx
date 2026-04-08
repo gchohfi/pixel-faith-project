@@ -12,6 +12,7 @@ import ResultScreen from '@/components/ResultScreen';
 import { FloatingBubbles, ConfettiContainer, FeedbackOverlay } from '@/components/GameEffects';
 
 type Screen = 'home' | 'game' | 'battle' | 'draw' | 'arremate-select' | 'arremate' | 'result';
+type LastGameType = 'adivinha' | 'arremate';
 
 interface ResultData {
   trophy: string;
@@ -26,6 +27,7 @@ const Index = () => {
   const [mode, setMode] = useState<GameMode>('classic');
   const [difficulty, setDifficulty] = useState<Difficulty>('easy');
   const [ageGroup, setAgeGroup] = useState<AgeGroup>('crianca');
+  const [lastGameType, setLastGameType] = useState<LastGameType>('adivinha');
   const [feedbackEmoji, setFeedbackEmoji] = useState<string | null>(null);
   const [resultData, setResultData] = useState<ResultData | null>(null);
 
@@ -37,9 +39,18 @@ const Index = () => {
   const goHome = useCallback(() => setScreen('home'), []);
 
   const startGame = () => {
+    setLastGameType('adivinha');
     if (mode === 'battle') setScreen('battle');
     else if (mode === 'draw') setScreen('draw');
     else setScreen('game');
+  };
+
+  const replayGame = () => {
+    if (lastGameType === 'arremate') {
+      setScreen('arremate');
+    } else {
+      startGame();
+    }
   };
 
   const handleGameFinish = (result: { score: number; correct: number; wrong: number; total: number }) => {
@@ -94,6 +105,7 @@ const Index = () => {
   };
 
   const handleArremateFinish = (result: { score: number; correct: number; wrong: number; total: number; faixa: AgeGroup }) => {
+    setLastGameType('arremate');
     const pct = Math.round((result.correct / result.total) * 100);
     const faixaLabel = AGE_GROUP_INFO[result.faixa];
     let trophy = '😊', title = 'Bom jogo!';
@@ -183,7 +195,7 @@ const Index = () => {
       {screen === 'result' && resultData && (
         <ResultScreen
           {...resultData}
-          onPlayAgain={startGame}
+          onPlayAgain={replayGame}
           onHome={goHome}
         />
       )}
