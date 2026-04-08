@@ -13,6 +13,10 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        display: ["'Fredoka One'", "cursive"],
+        body: ["'Nunito'", "sans-serif"],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -47,6 +51,20 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        game: {
+          orange: "hsl(var(--game-orange))",
+          "orange-light": "hsl(var(--game-orange-light))",
+          "orange-dark": "hsl(var(--game-orange-dark))",
+          purple: "hsl(var(--game-purple))",
+          "purple-light": "hsl(var(--game-purple-light))",
+          green: "hsl(var(--game-green))",
+          "green-light": "hsl(var(--game-green-light))",
+          red: "hsl(var(--game-red))",
+          blue: "hsl(var(--game-blue))",
+          yellow: "hsl(var(--game-yellow))",
+          surface: "hsl(var(--game-surface))",
+          surface2: "hsl(var(--game-surface2))",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -62,23 +80,22 @@ export default {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+        xl: "1.5rem",
+        "2xl": "2rem",
+      },
+      boxShadow: {
+        game: "var(--shadow-md)",
+        "game-lg": "var(--shadow-lg)",
+        glow: "var(--shadow-glow)",
       },
       keyframes: {
         "accordion-down": {
-          from: {
-            height: "0",
-          },
-          to: {
-            height: "var(--radix-accordion-content-height)",
-          },
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
         },
         "accordion-up": {
-          from: {
-            height: "var(--radix-accordion-content-height)",
-          },
-          to: {
-            height: "0",
-          },
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
         },
       },
       animation: {
