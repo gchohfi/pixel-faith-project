@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import type { GameMode, Difficulty } from '@/data/words';
 import type { AgeGroup } from '@/data/questions';
 import { AGE_GROUP_INFO } from '@/data/questions';
@@ -30,6 +30,7 @@ const Index = () => {
   const [lastGameType, setLastGameType] = useState<LastGameType>('adivinha');
   const [feedbackEmoji, setFeedbackEmoji] = useState<string | null>(null);
   const [resultData, setResultData] = useState<ResultData | null>(null);
+  const gameKeyRef = useRef(0);
 
   const showFeedback = useCallback((emoji: string) => {
     setFeedbackEmoji(emoji);
@@ -40,12 +41,14 @@ const Index = () => {
 
   const startGame = () => {
     setLastGameType('adivinha');
+    gameKeyRef.current += 1;
     if (mode === 'battle') setScreen('battle');
     else if (mode === 'draw') setScreen('draw');
     else setScreen('game');
   };
 
   const replayGame = () => {
+    gameKeyRef.current += 1;
     if (lastGameType === 'arremate') {
       setScreen('arremate');
     } else {
@@ -146,7 +149,7 @@ const Index = () => {
 
       {screen === 'game' && (
         <GameScreen
-          key={`game-${Date.now()}`}
+          key={`game-${gameKeyRef.current}`}
           mode={mode}
           difficulty={difficulty}
           onHome={goHome}
@@ -157,7 +160,7 @@ const Index = () => {
 
       {screen === 'battle' && (
         <BattleScreen
-          key={`battle-${Date.now()}`}
+          key={`battle-${gameKeyRef.current}`}
           difficulty={difficulty}
           onHome={goHome}
           onFinish={handleBattleFinish}
@@ -167,7 +170,7 @@ const Index = () => {
 
       {screen === 'draw' && (
         <DrawScreen
-          key={`draw-${Date.now()}`}
+          key={`draw-${gameKeyRef.current}`}
           difficulty={difficulty}
           onHome={goHome}
           onFinish={handleDrawFinish}
@@ -178,13 +181,13 @@ const Index = () => {
       {screen === 'arremate-select' && (
         <ArremateSelectScreen
           onHome={goHome}
-          onSelect={(group) => { setAgeGroup(group); setScreen('arremate'); }}
+          onSelect={(group) => { setAgeGroup(group); gameKeyRef.current += 1; setScreen('arremate'); }}
         />
       )}
 
       {screen === 'arremate' && (
         <ArremateScreen
-          key={`arremate-${Date.now()}`}
+          key={`arremate-${gameKeyRef.current}`}
           ageGroup={ageGroup}
           onBack={() => setScreen('arremate-select')}
           onFinish={handleArremateFinish}
