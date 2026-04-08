@@ -195,7 +195,7 @@ const Index = () => {
       {screen === 'result' && resultData && (
         <ResultScreen
           {...resultData}
-          onPlayAgain={startGame}
+          onPlayAgain={replayGame}
           onHome={goHome}
         />
       )}
