@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import type { GameMode, Difficulty } from '@/data/words';
 import type { AgeGroup } from '@/data/questions';
 import { AGE_GROUP_INFO } from '@/data/questions';
@@ -30,6 +30,7 @@ const Index = () => {
   const [lastGameType, setLastGameType] = useState<LastGameType>('adivinha');
   const [feedbackEmoji, setFeedbackEmoji] = useState<string | null>(null);
   const [resultData, setResultData] = useState<ResultData | null>(null);
+  const gameKeyRef = useRef(0);
 
   const showFeedback = useCallback((emoji: string) => {
     setFeedbackEmoji(emoji);
@@ -40,12 +41,14 @@ const Index = () => {
 
   const startGame = () => {
     setLastGameType('adivinha');
+    gameKeyRef.current += 1;
     if (mode === 'battle') setScreen('battle');
     else if (mode === 'draw') setScreen('draw');
     else setScreen('game');
   };
 
   const replayGame = () => {
+    gameKeyRef.current += 1;
     if (lastGameType === 'arremate') {
       setScreen('arremate');
     } else {
