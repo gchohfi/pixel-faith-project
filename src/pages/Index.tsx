@@ -105,6 +105,7 @@ const Index = () => {
   };
 
   const handleArremateFinish = (result: { score: number; correct: number; wrong: number; total: number; faixa: AgeGroup }) => {
+    setLastGameType('arremate');
     const pct = Math.round((result.correct / result.total) * 100);
     const faixaLabel = AGE_GROUP_INFO[result.faixa];
     let trophy = '😊', title = 'Bom jogo!';
