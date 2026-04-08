@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ARREMATE_QUESTIONS, type AgeGroup } from '@/data/questions';
 import { shuffle } from '@/data/words';
@@ -11,7 +11,7 @@ interface ArremateScreenProps {
 }
 
 export default function ArremateScreen({ ageGroup, onBack, onFinish, onFeedback }: ArremateScreenProps) {
-  const [questions, setQuestions] = useState(() => shuffle([...ARREMATE_QUESTIONS[ageGroup]]).slice(0, 10));
+  const [questions] = useState(() => shuffle([...ARREMATE_QUESTIONS[ageGroup]]).slice(0, 10));
   const [qIdx, setQIdx] = useState(0);
   const [score, setScore] = useState(0);
   const [correctCount, setCorrectCount] = useState(0);
@@ -20,8 +20,28 @@ export default function ArremateScreen({ ageGroup, onBack, onFinish, onFeedback 
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
   const [timeLeft, setTimeLeft] = useState(15);
   const timerRef = useRef<NodeJS.Timeout>();
+  const stateRef = useRef({ score: 0, correct: 0, wrong: 0 });
+
+  // Keep ref in sync
+  useEffect(() => {
+    stateRef.current = { score, correct: correctCount, wrong: wrongCount };
+  }, [score, correctCount, wrongCount]);
 
   const q = questions[qIdx];
+
+  const advance = useCallback(() => {
+    setTimeout(() => {
+      const nextIdx = qIdx + 1;
+      if (nextIdx >= questions.length) {
+        const s = stateRef.current;
+        onFinish({ score: s.score, correct: s.correct, wrong: s.wrong, total: questions.length, faixa: ageGroup });
+      } else {
+        setQIdx(nextIdx);
+        setAnswered(false);
+        setSelectedIdx(null);
+      }
+    }, 1200);
+  }, [qIdx, questions.length, ageGroup, onFinish]);
 
   useEffect(() => {
     if (!q || answered) return;
@@ -30,24 +50,26 @@ export default function ArremateScreen({ ageGroup, onBack, onFinish, onFeedback 
       setTimeLeft(prev => {
         if (prev <= 1) {
           clearInterval(timerRef.current);
-          handleTimeout();
           return 0;
         }
         return prev - 1;
       });
     }, 1000);
     return () => clearInterval(timerRef.current);
-  }, [qIdx, answered]);
+  }, [qIdx]);
 
-  const handleTimeout = () => {
-    setAnswered(true);
-    setWrongCount(w => w + 1);
-    onFeedback('⏰');
-    advanceAfterDelay();
-  };
+  // Handle timeout
+  useEffect(() => {
+    if (timeLeft === 0 && !answered && q) {
+      setAnswered(true);
+      setWrongCount(w => w + 1);
+      onFeedback('⏰');
+      advance();
+    }
+  }, [timeLeft, answered, q]);
 
   const handleAnswer = (index: number) => {
-    if (answered) return;
+    if (answered || !q) return;
     setAnswered(true);
     setSelectedIdx(index);
     clearInterval(timerRef.current);
@@ -62,24 +84,19 @@ export default function ArremateScreen({ ageGroup, onBack, onFinish, onFeedback 
       setWrongCount(w => w + 1);
       onFeedback('😅');
     }
-    advanceAfterDelay();
-  };
-
-  const advanceAfterDelay = () => {
+    // Delay advance to let state update
     setTimeout(() => {
       const nextIdx = qIdx + 1;
       if (nextIdx >= questions.length) {
-        // Use functional state to get latest values
-        setScore(s => {
-          setCorrectCount(c => {
-            setWrongCount(w => {
-              onFinish({ score: s, correct: c, wrong: w, total: questions.length, faixa: ageGroup });
-              return w;
-            });
-            return c;
-          });
-          return s;
-        });
+        // Read from updated ref after a tick
+        setTimeout(() => {
+          const s = stateRef.current;
+          // Manually calculate since ref might not be updated yet
+          const finalScore = isCorrect ? score + pts : score;
+          const finalCorrect = isCorrect ? correctCount + 1 : correctCount;
+          const finalWrong = isCorrect ? wrongCount : wrongCount + 1;
+          onFinish({ score: finalScore, correct: finalCorrect, wrong: finalWrong, total: questions.length, faixa: ageGroup });
+        }, 50);
       } else {
         setQIdx(nextIdx);
         setAnswered(false);
