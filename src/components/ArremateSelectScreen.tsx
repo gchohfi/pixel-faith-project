@@ -47,7 +47,11 @@ export default function ArremateSelectScreen({ onHome, onSelect }: ArremateSelec
                 <div className="text-xs font-semibold text-muted-foreground">{info.age}</div>
                 <div className="text-xs text-muted-foreground mt-0.5">{info.desc}</div>
               </div>
-              <span className={`text-xs font-bold px-2.5 py-1 rounded-full bg-${diffColor}/15 text-${diffColor}`}>
+              <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${
+                group === 'crianca' ? 'bg-game-green/15 text-game-green' :
+                group === 'juvenil' ? 'bg-game-yellow/15 text-game-yellow' :
+                'bg-game-red/15 text-game-red'
+              }`}>
                 {info.diffLabel}
               </span>
             </motion.button>

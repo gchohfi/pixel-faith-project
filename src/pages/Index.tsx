@@ -12,6 +12,7 @@ import ResultScreen from '@/components/ResultScreen';
 import { FloatingBubbles, ConfettiContainer, FeedbackOverlay } from '@/components/GameEffects';
 
 type Screen = 'home' | 'game' | 'battle' | 'draw' | 'arremate-select' | 'arremate' | 'result';
+type LastGameType = 'adivinha' | 'arremate';
 
 interface ResultData {
   trophy: string;
