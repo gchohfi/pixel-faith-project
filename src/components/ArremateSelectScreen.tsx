@@ -29,7 +29,6 @@ export default function ArremateSelectScreen({ onHome, onSelect }: ArremateSelec
       <div className="flex flex-col gap-3">
         {groups.map((group, i) => {
           const info = AGE_GROUP_INFO[group];
-          const diffColor = group === 'crianca' ? 'game-green' : group === 'juvenil' ? 'game-yellow' : 'game-red';
           return (
             <motion.button
               key={group}
