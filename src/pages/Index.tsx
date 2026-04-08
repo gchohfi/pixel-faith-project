@@ -39,9 +39,18 @@ const Index = () => {
   const goHome = useCallback(() => setScreen('home'), []);
 
   const startGame = () => {
+    setLastGameType('adivinha');
     if (mode === 'battle') setScreen('battle');
     else if (mode === 'draw') setScreen('draw');
     else setScreen('game');
+  };
+
+  const replayGame = () => {
+    if (lastGameType === 'arremate') {
+      setScreen('arremate');
+    } else {
+      startGame();
+    }
   };
 
   const handleGameFinish = (result: { score: number; correct: number; wrong: number; total: number }) => {
