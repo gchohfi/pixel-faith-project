@@ -27,6 +27,7 @@ const Index = () => {
   const [mode, setMode] = useState<GameMode>('classic');
   const [difficulty, setDifficulty] = useState<Difficulty>('easy');
   const [ageGroup, setAgeGroup] = useState<AgeGroup>('crianca');
+  const [lastGameType, setLastGameType] = useState<LastGameType>('adivinha');
   const [feedbackEmoji, setFeedbackEmoji] = useState<string | null>(null);
   const [resultData, setResultData] = useState<ResultData | null>(null);
 
