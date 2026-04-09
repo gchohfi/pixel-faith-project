@@ -5,12 +5,13 @@ import { shuffle } from '@/data/words';
 
 interface ArremateScreenProps {
   ageGroup: AgeGroup;
+  timePerQuestion: number;
   onBack: () => void;
   onFinish: (result: { score: number; correct: number; wrong: number; total: number; faixa: AgeGroup }) => void;
   onFeedback: (emoji: string) => void;
 }
 
-export default function ArremateScreen({ ageGroup, onBack, onFinish, onFeedback }: ArremateScreenProps) {
+export default function ArremateScreen({ ageGroup, timePerQuestion, onBack, onFinish, onFeedback }: ArremateScreenProps) {
   const [questions] = useState(() => shuffle([...ARREMATE_QUESTIONS[ageGroup]]).slice(0, 10));
   const [qIdx, setQIdx] = useState(0);
   const [score, setScore] = useState(0);
@@ -18,7 +19,7 @@ export default function ArremateScreen({ ageGroup, onBack, onFinish, onFeedback 
   const [wrongCount, setWrongCount] = useState(0);
   const [answered, setAnswered] = useState(false);
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
-  const [timeLeft, setTimeLeft] = useState(15);
+  const [timeLeft, setTimeLeft] = useState(timePerQuestion);
   const timerRef = useRef<NodeJS.Timeout>();
   const stateRef = useRef({ score: 0, correct: 0, wrong: 0 });
 
@@ -45,7 +46,7 @@ export default function ArremateScreen({ ageGroup, onBack, onFinish, onFeedback 
 
   useEffect(() => {
     if (!q || answered) return;
-    setTimeLeft(15);
+    setTimeLeft(timePerQuestion);
     timerRef.current = setInterval(() => {
       setTimeLeft(prev => {
         if (prev <= 1) {
