@@ -10,10 +10,11 @@ import ArremateSelectScreen from '@/components/ArremateSelectScreen';
 import ArremateScreen from '@/components/ArremateScreen';
 import ResultScreen from '@/components/ResultScreen';
 import StopGame from '@/games/stop/StopGame';
+import QuemSouEuGame from '@/games/quem-sou-eu/QuemSouEuGame';
 import { ConfettiContainer, FeedbackOverlay } from '@/components/GameEffects';
 
-type Screen = 'home' | 'adivinha-setup' | 'game' | 'battle' | 'draw' | 'arremate-select' | 'arremate' | 'stop' | 'result';
-type LastGameType = 'adivinha' | 'arremate' | 'stop';
+type Screen = 'home' | 'adivinha-setup' | 'game' | 'battle' | 'draw' | 'arremate-select' | 'arremate' | 'stop' | 'quemsoueu' | 'result';
+type LastGameType = 'adivinha' | 'arremate' | 'stop' | 'quemsoueu';
 
 interface ResultData {
   trophy: string;
@@ -53,6 +54,10 @@ const Index = () => {
       case 'arremate':
         setScreen('arremate-select');
         break;
+      case 'quemsoueu':
+        setLastGameType('quemsoueu');
+        setScreen('quemsoueu');
+        break;
       case 'batalha':
         setLastGameType('adivinha');
         setScreen('battle');
@@ -68,6 +73,7 @@ const Index = () => {
     gameKeyRef.current += 1;
     if (lastGameType === 'arremate') setScreen('arremate');
     else if (lastGameType === 'stop') setScreen('stop');
+    else if (lastGameType === 'quemsoueu') setScreen('quemsoueu');
     else setScreen('game');
   };
 
@@ -198,6 +204,15 @@ const Index = () => {
           onFeedback={showFeedback}
         />
       )}
+
+      {screen === 'quemsoueu' && (
+        <QuemSouEuGame
+          key={`quemsoueu-${gameKeyRef.current}`}
+          onHome={goHome}
+          onFeedback={showFeedback}
+        />
+      )}
+
 
       {screen === 'arremate-select' && (
         <ArremateSelectScreen
