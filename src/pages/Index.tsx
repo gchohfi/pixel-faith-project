@@ -28,6 +28,7 @@ const Index = () => {
   const [screen, setScreen] = useState<Screen>('home');
   const [difficulty, setDifficulty] = useState<Difficulty>('easy');
   const [ageGroup, setAgeGroup] = useState<AgeGroup>('crianca');
+  const [arremateTime, setArremateTime] = useState(15);
   const [lastGameType, setLastGameType] = useState<LastGameType>('adivinha');
   const [feedbackEmoji, setFeedbackEmoji] = useState<string | null>(null);
   const [resultData, setResultData] = useState<ResultData | null>(null);
@@ -217,7 +218,7 @@ const Index = () => {
       {screen === 'arremate-select' && (
         <ArremateSelectScreen
           onHome={goHome}
-          onSelect={(group) => { setAgeGroup(group); gameKeyRef.current += 1; setScreen('arremate'); }}
+          onSelect={(group, time) => { setAgeGroup(group); setArremateTime(time); gameKeyRef.current += 1; setScreen('arremate'); }}
         />
       )}
 
@@ -225,6 +226,7 @@ const Index = () => {
         <ArremateScreen
           key={`arremate-${gameKeyRef.current}`}
           ageGroup={ageGroup}
+          timePerQuestion={arremateTime}
           onBack={() => setScreen('arremate-select')}
           onFinish={handleArremateFinish}
           onFeedback={showFeedback}
