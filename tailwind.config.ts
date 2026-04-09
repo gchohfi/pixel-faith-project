@@ -64,6 +64,7 @@ export default {
           yellow: "hsl(var(--game-yellow))",
           surface: "hsl(var(--game-surface))",
           surface2: "hsl(var(--game-surface2))",
+          teal: "hsl(var(--game-teal))",
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
