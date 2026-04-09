@@ -11,6 +11,7 @@ interface GameInfo {
 
 const GAMES: GameInfo[] = [
   { id: 'adivinha', icon: '🎯', name: 'Adivinhação', desc: '10 dicas para adivinhar a palavra secreta', color: 'hsl(var(--primary))', bgColor: 'hsla(var(--primary) / 0.1)' },
+  { id: 'quemsoueu', icon: '🤔', name: 'Quem Sou Eu?', desc: 'Dicas progressivas — adivinhe quem ou o que é', color: 'hsl(var(--game-blue))', bgColor: 'hsla(var(--game-blue) / 0.1)' },
   { id: 'stop', icon: '✏️', name: 'Stop!', desc: 'Categorias e letras — clássico da família', color: 'hsl(var(--game-teal))', bgColor: 'hsla(var(--game-teal) / 0.1)' },
   { id: 'arremate', icon: '🏆', name: 'ARremate', desc: 'Quiz por faixa etária com timer', color: 'hsl(var(--accent))', bgColor: 'hsla(var(--accent) / 0.1)' },
   { id: 'batalha', icon: '⚔️', name: 'Batalha', desc: 'Equipes competindo por dicas', color: 'hsl(var(--game-red))', bgColor: 'hsla(var(--game-red) / 0.1)' },
