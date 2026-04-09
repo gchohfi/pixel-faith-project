@@ -205,7 +205,15 @@ const Index = () => {
         />
       )}
 
-      {screen === 'arremate-select' && (
+      {screen === 'quemsoueu' && (
+        <QuemSouEuGame
+          key={`quemsoueu-${gameKeyRef.current}`}
+          onHome={goHome}
+          onFeedback={showFeedback}
+        />
+      )}
+
+
         <ArremateSelectScreen
           onHome={goHome}
           onSelect={(group) => { setAgeGroup(group); gameKeyRef.current += 1; setScreen('arremate'); }}
