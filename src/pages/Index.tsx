@@ -214,6 +214,7 @@ const Index = () => {
       )}
 
 
+      {screen === 'arremate-select' && (
         <ArremateSelectScreen
           onHome={goHome}
           onSelect={(group) => { setAgeGroup(group); gameKeyRef.current += 1; setScreen('arremate'); }}
