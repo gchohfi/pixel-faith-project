@@ -19,7 +19,7 @@ export default function ArremateScreen({ ageGroup, timePerQuestion, onBack, onFi
   const [wrongCount, setWrongCount] = useState(0);
   const [answered, setAnswered] = useState(false);
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
-  const [timeLeft, setTimeLeft] = useState(15);
+  const [timeLeft, setTimeLeft] = useState(timePerQuestion);
   const timerRef = useRef<NodeJS.Timeout>();
   const stateRef = useRef({ score: 0, correct: 0, wrong: 0 });
 
