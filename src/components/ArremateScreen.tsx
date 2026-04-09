@@ -5,12 +5,13 @@ import { shuffle } from '@/data/words';
 
 interface ArremateScreenProps {
   ageGroup: AgeGroup;
+  timePerQuestion: number;
   onBack: () => void;
   onFinish: (result: { score: number; correct: number; wrong: number; total: number; faixa: AgeGroup }) => void;
   onFeedback: (emoji: string) => void;
 }
 
-export default function ArremateScreen({ ageGroup, onBack, onFinish, onFeedback }: ArremateScreenProps) {
+export default function ArremateScreen({ ageGroup, timePerQuestion, onBack, onFinish, onFeedback }: ArremateScreenProps) {
   const [questions] = useState(() => shuffle([...ARREMATE_QUESTIONS[ageGroup]]).slice(0, 10));
   const [qIdx, setQIdx] = useState(0);
   const [score, setScore] = useState(0);
@@ -45,7 +46,7 @@ export default function ArremateScreen({ ageGroup, onBack, onFinish, onFeedback 
 
   useEffect(() => {
     if (!q || answered) return;
-    setTimeLeft(15);
+    setTimeLeft(timePerQuestion);
     timerRef.current = setInterval(() => {
       setTimeLeft(prev => {
         if (prev <= 1) {
