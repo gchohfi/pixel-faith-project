@@ -110,7 +110,7 @@ export default function QuemSouEuGame({ onHome, onFeedback }: QuemSouEuGameProps
         </div>
 
         <div className="flex gap-3">
-          <motion.button whileTap={{ scale: 0.95 }} onClick={() => { setRoundIdx(0); setClueIdx(0); setScore(0); setCorrect(0); setWrong(0); setFinished(false); setPhase('playing'); }}
+          <motion.button whileTap={{ scale: 0.95 }} onClick={startPlaying}
             className="px-6 py-3.5 bg-primary text-primary-foreground rounded-xl font-display text-base shadow-glow">
             🔄 Jogar Novamente
           </motion.button>
