@@ -9,10 +9,11 @@ interface QuemSouEuGameProps {
 
 type Phase = 'intro' | 'playing' | 'revealed';
 
-const ROUNDS = 8;
+const ROUND_OPTIONS = [5, 8, 10, 15] as const;
 
 export default function QuemSouEuGame({ onHome, onFeedback }: QuemSouEuGameProps) {
-  const [entries] = useState(() => shuffle(getQuemSouEuEntries()).slice(0, ROUNDS));
+  const [selectedRounds, setSelectedRounds] = useState(8);
+  const [entries, setEntries] = useState(() => shuffle(getQuemSouEuEntries()).slice(0, 8));
   const [roundIdx, setRoundIdx] = useState(0);
   const [clueIdx, setClueIdx] = useState(0);
   const [phase, setPhase] = useState<Phase>('intro');
@@ -23,7 +24,17 @@ export default function QuemSouEuGame({ onHome, onFeedback }: QuemSouEuGameProps
 
   const entry = entries[roundIdx];
 
-  const startPlaying = () => setPhase('playing');
+  const startPlaying = () => {
+    const newEntries = shuffle(getQuemSouEuEntries()).slice(0, selectedRounds);
+    setEntries(newEntries);
+    setRoundIdx(0);
+    setClueIdx(0);
+    setScore(0);
+    setCorrect(0);
+    setWrong(0);
+    setFinished(false);
+    setPhase('playing');
+  };
 
   const showNextClue = () => {
     if (clueIdx < 2) {
@@ -149,6 +160,23 @@ export default function QuemSouEuGame({ onHome, onFeedback }: QuemSouEuGameProps
             <span>🥇 1ª dica = 3 pontos</span>
             <span>🥈 2ª dica = 2 pontos</span>
             <span>🥉 3ª dica = 1 ponto</span>
+          </div>
+
+          <div className="flex flex-col gap-2 w-full max-w-xs">
+            <p className="text-sm font-bold text-muted-foreground text-center">Rodadas</p>
+            <div className="flex gap-2 justify-center">
+              {ROUND_OPTIONS.map(r => (
+                <motion.button key={r} whileTap={{ scale: 0.95 }}
+                  onClick={() => setSelectedRounds(r)}
+                  className={`px-4 py-2 rounded-xl border-2 font-bold text-sm transition-all ${
+                    selectedRounds === r
+                      ? 'border-primary bg-primary text-primary-foreground'
+                      : 'border-border bg-card text-muted-foreground hover:border-primary'
+                  }`}>
+                  {r}
+                </motion.button>
+              ))}
+            </div>
           </div>
           <motion.button whileTap={{ scale: 0.97 }} onClick={startPlaying}
             className="w-full max-w-xs py-4 bg-primary text-primary-foreground rounded-xl font-display text-xl shadow-glow">
