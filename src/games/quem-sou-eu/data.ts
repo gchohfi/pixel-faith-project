@@ -120,6 +120,15 @@ const ENTRIES: QuemSouEuEntry[] = [
   { answer: "Surfe", emoji: "🏄", category: "Esporte", clues: ["Sou praticado no mar, em cima de ondas", "Uso uma prancha para me equilibrar", "O Havaí é considerado meu berço"] },
   { answer: "Xadrez", emoji: "♟️", category: "Esporte", clues: ["Sou jogado em um tabuleiro quadriculado", "Cada jogador comanda um exército de 16 peças", "A peça mais importante é o rei"] },
   { answer: "Capoeira", emoji: "🤸", category: "Esporte", clues: ["Sou uma mistura de luta, dança e música", "Nasci no Brasil, criada por pessoas escravizadas", "Sou jogada dentro de uma roda ao som do berimbau"] },
+  // ── Extras ──
+  { answer: "Microscópio", emoji: "🔬", category: "Objeto", clues: ["Sou um instrumento científico de laboratório", "Tenho lentes que aumentam coisas invisíveis a olho nu", "Cientistas me usam para ver células e bactérias"] },
+  { answer: "Diamante", emoji: "💎", category: "Natureza", clues: ["Sou a substância natural mais dura do mundo", "Sou formado por carbono sob pressão extrema", "Sou usado em joias e sou muito valioso"] },
+  { answer: "Satélite", emoji: "🛰️", category: "Invenção", clues: ["Fico orbitando a Terra no espaço", "Posso ser natural como a Lua ou feito pelo homem", "GPS, TV e previsão do tempo dependem de mim"] },
+  { answer: "Canguru", emoji: "🦘", category: "Animal", clues: ["Sou um marsupial que carrega filhotes numa bolsa", "Me locomovo dando grandes saltos", "Sou símbolo da Austrália"] },
+  { answer: "Beethoven (cão)", emoji: "🐕", category: "Personagem", clues: ["Sou um personagem de filmes de comédia", "Sou um cachorro enorme da raça São Bernardo", "Causo muita confusão na família que me adotou"] },
+  { answer: "Papiro", emoji: "📜", category: "Invenção", clues: ["Fui usado antes do papel ser inventado", "Sou feito de uma planta que cresce às margens do rio Nilo", "Os egípcios antigos escreviam em mim"] },
+  { answer: "Panda", emoji: "🐼", category: "Animal", clues: ["Sou um urso preto e branco", "Me alimento quase só de bambu", "Sou símbolo da conservação animal e venho da China"] },
+  { answer: "Navio Titanic", emoji: "🚢", category: "Objeto", clues: ["Fui considerado impossível de afundar", "Bati em um iceberg na minha primeira viagem", "Minha história virou um dos filmes mais famosos do cinema"] },
 ];
 
 export function getQuemSouEuEntries(): QuemSouEuEntry[] {
