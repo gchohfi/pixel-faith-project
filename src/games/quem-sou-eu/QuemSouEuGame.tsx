@@ -1,6 +1,7 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getQuemSouEuEntries, shuffle, type QuemSouEuEntry } from './data';
+import { Checkbox } from '@/components/ui/checkbox';
 
 interface QuemSouEuGameProps {
   onHome: () => void;
@@ -12,8 +13,11 @@ type Phase = 'intro' | 'playing' | 'revealed';
 const ROUND_OPTIONS = [5, 8, 10, 15] as const;
 
 export default function QuemSouEuGame({ onHome, onFeedback }: QuemSouEuGameProps) {
+  const allEntries = useMemo(() => getQuemSouEuEntries(), []);
+  const allCategories = useMemo(() => [...new Set(allEntries.map(e => e.category))].sort(), [allEntries]);
+  const [selectedCategories, setSelectedCategories] = useState<Set<string>>(() => new Set(allCategories));
   const [selectedRounds, setSelectedRounds] = useState(8);
-  const [entries, setEntries] = useState(() => shuffle(getQuemSouEuEntries()).slice(0, 8));
+  const [entries, setEntries] = useState(() => shuffle(allEntries).slice(0, 8));
   const [roundIdx, setRoundIdx] = useState(0);
   const [clueIdx, setClueIdx] = useState(0);
   const [phase, setPhase] = useState<Phase>('intro');
@@ -25,7 +29,8 @@ export default function QuemSouEuGame({ onHome, onFeedback }: QuemSouEuGameProps
   const entry = entries[roundIdx];
 
   const startPlaying = () => {
-    const newEntries = shuffle(getQuemSouEuEntries()).slice(0, selectedRounds);
+    const filtered = allEntries.filter(e => selectedCategories.has(e.category));
+    const newEntries = shuffle(filtered).slice(0, selectedRounds);
     setEntries(newEntries);
     setRoundIdx(0);
     setClueIdx(0);
@@ -178,8 +183,61 @@ export default function QuemSouEuGame({ onHome, onFeedback }: QuemSouEuGameProps
               ))}
             </div>
           </div>
+
+          {/* Category filter */}
+          <div className="flex flex-col gap-2 w-full max-w-xs">
+            <div className="flex items-center justify-between">
+              <p className="text-sm font-bold text-muted-foreground">Categorias</p>
+              <button
+                onClick={() => {
+                  if (selectedCategories.size === allCategories.length) {
+                    setSelectedCategories(new Set());
+                  } else {
+                    setSelectedCategories(new Set(allCategories));
+                  }
+                }}
+                className="text-xs font-bold text-primary hover:underline"
+              >
+                {selectedCategories.size === allCategories.length ? 'Desmarcar todas' : 'Marcar todas'}
+              </button>
+            </div>
+            <div className="grid grid-cols-2 gap-1.5">
+              {allCategories.map(cat => {
+                const checked = selectedCategories.has(cat);
+                const count = allEntries.filter(e => e.category === cat).length;
+                return (
+                  <label
+                    key={cat}
+                    className={`flex items-center gap-2 px-3 py-2 rounded-lg border-2 cursor-pointer transition-all text-sm font-semibold ${
+                      checked
+                        ? 'border-primary bg-primary/10 text-foreground'
+                        : 'border-border bg-card text-muted-foreground'
+                    }`}
+                  >
+                    <Checkbox
+                      checked={checked}
+                      onCheckedChange={() => {
+                        const next = new Set(selectedCategories);
+                        if (checked) next.delete(cat);
+                        else next.add(cat);
+                        setSelectedCategories(next);
+                      }}
+                      className="h-3.5 w-3.5"
+                    />
+                    <span>{cat}</span>
+                    <span className="text-xs text-muted-foreground ml-auto">{count}</span>
+                  </label>
+                );
+              })}
+            </div>
+            {selectedCategories.size === 0 && (
+              <p className="text-xs text-destructive font-bold text-center">Selecione ao menos 1 categoria</p>
+            )}
+          </div>
+
           <motion.button whileTap={{ scale: 0.97 }} onClick={startPlaying}
-            className="w-full max-w-xs py-4 bg-primary text-primary-foreground rounded-xl font-display text-xl shadow-glow">
+            disabled={selectedCategories.size === 0}
+            className="w-full max-w-xs py-4 bg-primary text-primary-foreground rounded-xl font-display text-xl shadow-glow disabled:opacity-50 disabled:cursor-not-allowed">
             ▶ Começar!
           </motion.button>
         </motion.div>
