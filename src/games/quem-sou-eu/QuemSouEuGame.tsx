@@ -29,7 +29,8 @@ export default function QuemSouEuGame({ onHome, onFeedback }: QuemSouEuGameProps
   const entry = entries[roundIdx];
 
   const startPlaying = () => {
-    const newEntries = shuffle(getQuemSouEuEntries()).slice(0, selectedRounds);
+    const filtered = allEntries.filter(e => selectedCategories.has(e.category));
+    const newEntries = shuffle(filtered).slice(0, selectedRounds);
     setEntries(newEntries);
     setRoundIdx(0);
     setClueIdx(0);
