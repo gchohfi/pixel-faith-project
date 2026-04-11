@@ -1,6 +1,7 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getQuemSouEuEntries, shuffle, type QuemSouEuEntry } from './data';
+import { Checkbox } from '@/components/ui/checkbox';
 
 interface QuemSouEuGameProps {
   onHome: () => void;
