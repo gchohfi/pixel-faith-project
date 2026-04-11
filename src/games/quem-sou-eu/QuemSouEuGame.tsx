@@ -13,8 +13,11 @@ type Phase = 'intro' | 'playing' | 'revealed';
 const ROUND_OPTIONS = [5, 8, 10, 15] as const;
 
 export default function QuemSouEuGame({ onHome, onFeedback }: QuemSouEuGameProps) {
+  const allEntries = useMemo(() => getQuemSouEuEntries(), []);
+  const allCategories = useMemo(() => [...new Set(allEntries.map(e => e.category))].sort(), [allEntries]);
+  const [selectedCategories, setSelectedCategories] = useState<Set<string>>(() => new Set(allCategories));
   const [selectedRounds, setSelectedRounds] = useState(8);
-  const [entries, setEntries] = useState(() => shuffle(getQuemSouEuEntries()).slice(0, 8));
+  const [entries, setEntries] = useState(() => shuffle(allEntries).slice(0, 8));
   const [roundIdx, setRoundIdx] = useState(0);
   const [clueIdx, setClueIdx] = useState(0);
   const [phase, setPhase] = useState<Phase>('intro');
